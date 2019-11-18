@@ -2,6 +2,7 @@ package org.launchcode.techjobs.console;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -19,6 +20,7 @@ public class TechJobs {
         columnChoices.put("employer", "Employer");
         columnChoices.put("location", "Location");
         columnChoices.put("position type", "Position Type");
+        columnChoices.put("name", "Position Title");
         columnChoices.put("all", "All");
 
         // Top-level menu options
@@ -61,7 +63,7 @@ public class TechJobs {
                 String searchTerm = in.nextLine();
 
                 if (searchField.equals("all")) {
-                    System.out.println("Search all fields not yet implemented.");
+                    printJobs(JobData.findByValue(searchTerm));
                 } else {
                     printJobs(JobData.findByColumnAndValue(searchField, searchTerm));
                 }
@@ -109,8 +111,19 @@ public class TechJobs {
     }
 
     // Print a list of jobs
-    private static void printJobs(ArrayList<HashMap<String, String>> someJobs) {
-
-        System.out.println("printJobs is not implemented yet");
+    private static void printJobs(ArrayList<HashMap<String, String>> resultsList) {
+        if  (resultsList.size() < 1) {
+            System.out.println("Your search returned no matching results.");
+        } else {
+            int i = 1;
+            for (HashMap<String, String> aResult : resultsList) {
+                System.out.println("*** Matching Result #" + i + " ***");
+                i++;
+                for (Map.Entry<String, String> detail : aResult.entrySet()) {
+                    System.out.println(detail.getKey() + ": " + detail.getValue());
+                }
+            }
+            System.out.println("*** End of Results ***");
+        }
     }
 }
